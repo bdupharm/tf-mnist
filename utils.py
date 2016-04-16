@@ -5,7 +5,7 @@
 import tensorflow as tf
 
 
-def weight(shape. name="filter"):
+def weight(shape, name="filter"):
     """Initialize a weight tensor of :param shape: with...
      - mean of 0.0
      - standard deviation of 0.1.
@@ -17,8 +17,8 @@ def weight(shape. name="filter"):
     Each one of these filters will learn a different feature for its `W * H` input patch.
     People either call this the`Depth Column` or `Fibre`.
 
-     Why? Initializing weights w/ a small amount of noise
-     prevents 0 gradients.
+    Why? Initializing weights w/ a small amount of noise
+    can help prevent 0 gradients.
 
     """
     # mean is 0.0 by default, which means that that tensor is centered on the true value.
@@ -36,13 +36,9 @@ def bias(shape, name="bias"):
     :param shape: Shape of the return tensor
     `[Output Depth]`
 
-    Why? Apparently, if you are using a ReLU activation fx
-    then doing so avoids "dead neurons".
+    Why the positive bias? Apparently, if you are using a ReLU activation fx
+    then doing so can help avoid "dead neurons".
     See: http://datascience.stackexchange.com/questions/5706/what-is-the-dying-relu-problem-in-neural-networks
-
-    This is also known as a "Leaky ReLU".
-
-
 
     """
     initial = tf.constant(0.1, shape=shape)
@@ -87,7 +83,7 @@ def max_pool_2x2(x, name="max_pool"):
     (ie. downsizes a 224x224x64 input tensor to a 112x112x64 ouput tensor)
     Note that pooling preserves the depth of the input.
 
-    Generic downsampling 
+    Generic downsampling
     ex [1, 3, 5, 7, 9]
     Downsample array by 2 would result in [1, 5, 7]
 
