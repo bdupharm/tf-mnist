@@ -2,9 +2,16 @@
 __pycache__/
 *.py[cod]
 *$py.class
+*.swp
 
 # C extensions
 *.so
+
+# Virtualenv
+venv/
+
+# Project specifc
+MNIST_data/
 
 # Distribution / packaging
 .Python
