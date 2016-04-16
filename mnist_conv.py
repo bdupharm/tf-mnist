@@ -102,6 +102,7 @@ with tf.Graph().as_default():
                 train_accuracy = accuracy.eval(feed_dict={
                     x:batch[0], y_: batch[1], keep_prob: 1.0})
                 print("step %d, training accuracy %g"%(i, train_accuracy))
+
             train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5})
 
             print("test accuracy %g"%accuracy.eval(feed_dict={
