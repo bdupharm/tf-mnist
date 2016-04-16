@@ -12,6 +12,7 @@ venv/
 
 # Project specifc
 MNIST_data/
+summaries/
 
 # Distribution / packaging
 .Python
