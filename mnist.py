@@ -13,7 +13,26 @@ with tf.Graph().as_default():
     b = tf.Variable(tf.zeros([10]))
 
     y = tf.nn.softmax(tf.matmul(x,W) + b)
-    cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=[1]))
+    '''
+    function in the form of:
+        f(x_i, W, b) = Wx_i + b
+        which is a linear mapping of image pixels to class scores. W and b are the 
+        parameters of this function which change after each iteration
+    
+    Variables 
+    x_i : an image with all its pixels flattened out into a [D x 1] column vector
+    b : "bias" vector of size [K x 1]
+    W : "weight" matrix of size [K x D]
+    '''
+
+    cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * y, reduction_indices=[1]))
+    '''
+    Represents the cross-entropy between the p distribution and the estimated distribution q
+
+    Defined as:
+        H(p,q) = - summation{p(x)*log(q(x))} 
+    '''
+    
     train_step = tf.train.GradientDescentOptimizer(0.5).minimize(cross_entropy)
 
     sess = tf.Session()
