@@ -25,16 +25,33 @@ with tf.Graph().as_default():
     W : "weight" matrix of size [K x D]
     '''
 
-    cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * y, reduction_indices=[1]))
+    cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=[1]))
     '''
     Represents the cross-entropy between the p distribution and the estimated distribution q
 
     Defined as:
-        H(p,q) = - summation{p(x)*log(q(x))} 
+        H(p,q) = - summation{p(x)*log(q(x))}
+
+    This represents a a second order equation with a defined minima so gradient descent 
+    converges to only 1 minima. 
     '''
     
     train_step = tf.train.GradientDescentOptimizer(0.5).minimize(cross_entropy)
+    '''
+    cross_entropy example
 
+    assume inaccurate output:
+    output = [0.3, 0.2, 0.5] expected = [0, 1, 0]
+    cross entropy would be -0.2
+
+    assume accurate output:
+    output = [0.3, 0.5, 0.2] expected = [0, 1, 0]
+    cross entropy would be -0.5
+
+    Notice that the accurate output has a more negative value and therefore favored since
+    the loss function aims to minimize the cross entropy
+    '''
+    
     sess = tf.Session()
     sess.run(tf.initialize_all_variables())
 
