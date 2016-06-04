@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 
+import time
+
 import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
+
 
 mnist = input_data.read_data_sets("MNIST_data", one_hot=True)
 
@@ -16,8 +19,9 @@ with tf.Graph().as_default():
        (ie. [ 0, 0, 0, 0, 0, 1, 0, 0, 0, 0 ] where the index of 1 is the class)
 
     """
-    W = tf.Variable(tf.zeros([784,10]))
-    b = tf.Variable(tf.zeros([10]))
+    with tf.name_scope("hidden1"):
+        W = tf.Variable(tf.zeros([784,10]), name="weights")
+        b = tf.Variable(tf.zeros([10]), name="biases")
 
     y = tf.nn.softmax(tf.matmul(x,W) + b)
 
@@ -41,7 +45,9 @@ with tf.Graph().as_default():
     W : "weight" matrix of size [D * K] (transpose of x)
 
     """
-    cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=[1]))
+    cross_entropy = -tf.reduce_sum(y_ * tf.log(y), reduction_indices=[1],
+                                   name="xentropy")
+    loss = tf.reduce_mean(cross_entropy, name="xentropy_mean")
 
     """
     Represents the cross-entropy between the p distribution and the estimated distribution q
@@ -53,33 +59,52 @@ with tf.Graph().as_default():
     converges to only 1 minima.
 
     """
-    train_step = tf.train.GradientDescentOptimizer(0.5).minimize(cross_entropy)
+    global_step = tf.Variable(0, name="global_step", trainable=False)
+    train_op = tf.train.GradientDescentOptimizer(0.5).minimize(loss)
 
     """
     cross_entropy example
 
     assume inaccurate output:
-    output = [0.3, 0.2, 0.5] expected = [0, 1, 0]
+    output = [0.3, 0.2, 0.5]
+    expected = [0, 1, 0]
     cross entropy would be -0.2
 
     assume accurate output:
-    output = [0.3, 0.5, 0.2] expected = [0, 1, 0]
+    output = [0.3, 0.5, 0.2]
+    expected = [0, 1, 0]
     cross entropy would be -0.5
 
     Notice that the accurate output has a more negative value and therefore favored since
     the loss function aims to minimize the cross entropy
 
     """
-    sess = tf.Session()
-    sess.run(tf.initialize_all_variables())
 
-    with sess.as_default():
-        for i in range(1000):
-            batch = mnist.train.next_batch(50)
-            train_step.run(feed_dict={x: batch[0], y_: batch[1]})
-            import ipdb;ipdb.set_trace()
+    # SUMMARIES
+    tf.scalar_summary(loss.op.name, loss)
+    summary_op = tf.merge_all_summaries()
+
+    with tf.Session() as sess:
+        sess.run(tf.initialize_all_variables())
+
+        summary_writer = tf.train.SummaryWriter("/tmp/tf-summaries/", sess.graph)
+
+        start = time.time()
+        for step in range(1000):
+            image_inputs, actual_classes = mnist.train.next_batch(50)
+            _, loss_value = sess.run([train_op, loss], feed_dict={x: image_inputs, y_: actual_classes})
+
+            summary_str = sess.run(summary_op, feed_dict={x: image_inputs, y_: actual_classes})
+            summary_writer.add_summary(summary_str, step)
+
+            if step % 100 == 0:
+                duration = time.time() - start
+                print "Step {}: loss = {:.2f} ({:.3f} sec)".format(step, loss_value,
+                                                                 duration)
+
 
         correct_prediction = tf.equal(tf.argmax(y,1), tf.argmax(y_,1))
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
+        # Calling `Tensor.eval()` == `tf.get_default_session().run(Tensor)`
         print(accuracy.eval(feed_dict={x: mnist.test.images, y_: mnist.test.labels}))
