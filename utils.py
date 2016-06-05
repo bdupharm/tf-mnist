@@ -42,6 +42,9 @@ def conv2d(x, W, name="conv"):
     """Takes 4-D input tensor x and applies a sliding window filter W to compute
     a 2-D convolution.
 
+    The dimensions of the input are:
+    `[Batch Size, Height, Width, Depth (Color Channels)]`
+
     Uses a stride of `[1, 1, 1, 1]` where most cases of `strides =  [1, stride, stride, 1]`
      - `stride[0] = stride[3] = 1` (vertical stride) and
      - `stride[1] = stride[2] = stride` (horizontal stride)
