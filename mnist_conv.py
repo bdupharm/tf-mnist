@@ -22,7 +22,7 @@ with tf.Graph().as_default():
 
     """
     with tf.name_scope("conv1"):
-        # We arbitrarily choose to use 32 filters to learn 32 features for each 5x5 patch
+        # We arbitrarily choose to use 32 filters (Output Depth) to learn 32 features for each 5x5 patch
         # TODO: Figure out how each filter learns to look for a different feature.
         # TODO: How to choose a number of filters to use. What if... too many/too few?
         W_conv1 = util.weight([5, 5, 1, 32], name="Weight_conv1")

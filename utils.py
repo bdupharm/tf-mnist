@@ -15,6 +15,7 @@ def weight(shape. name="filter"):
 
     **NOTE**: The `Output Depth` is the # of of filters or kernels we would like to use.
     Each one of these filters will learn a different feature for its `W * H` input patch.
+    People either call this the`Depth Column` or `Fibre`.
 
      Why? Initializing weights w/ a small amount of noise
      prevents 0 gradients.
