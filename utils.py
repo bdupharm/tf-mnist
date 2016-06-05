@@ -5,7 +5,7 @@
 import tensorflow as tf
 
 
-def weight_variable(shape):
+def weight_variable(shape. name="filter"):
     """Initialize a weight tensor of :param shape: with...
      - mean of 0.0
      - standard deviation of 0.1.
@@ -18,10 +18,10 @@ def weight_variable(shape):
     """
     # mean is 0.0 by default
     initial = tf.truncated_normal(shape, stddev=0.1)
-    return tf.Variable(initial)
+    return tf.Variable(initial, name=name)
 
 
-def bias_variable(shape):
+def bias_variable(shape, name="bias"):
     """Initialize a bias tensor of :param shape: with a
     slightly positive initial bias of 0.1.
 
@@ -35,12 +35,14 @@ def bias_variable(shape):
 
     """
     initial = tf.constant(0.1, shape=shape)
-    return tf.Variable(initial)
+    return tf.Variable(initial, name=name)
 
 
-def conv2d(x, W):
-    """Takes input tensor x and applies a sliding window filter W with a
-    stride of `[1, 1, 1, 1]` where most cases of `strides =  [1, stride, stride, 1]`
+def conv2d(x, W, name="conv"):
+    """Takes 4-D input tensor x and applies a sliding window filter W to compute
+    a 2-D convolution.
+
+    Uses a stride of `[1, 1, 1, 1]` where most cases of `strides =  [1, stride, stride, 1]`
      - `stride[0] = stride[3] = 1` (vertical stride) and
      - `stride[1] = stride[2] = stride` (horizontal stride)
 
@@ -53,17 +55,17 @@ def conv2d(x, W):
 
     Why?
      - Using fully connected layers for high dimensional inputs such as images
-       is impractical and, frankly, unnecessary. We don't care about the learning
+       is impractical and, frankly, unnecessary. We don't care about learning
        the probabilities for each and every pixel but general features instead.
      - Draws comparisons to rods/cones in the retina
      - Downsizing reduces amount of parameters/computation in the network
      - Control overfitting
 
     """
-    return tf.nn.conv2d(x, W, strides=[1, 1, 1, 1], padding="SAME")
+    return tf.nn.conv2d(x, W, strides=[1, 1, 1, 1], padding="SAME", name=name)
 
 
-def max_pool_2x2(x):
+def max_pool_2x2(x, name="max_pool"):
     """Applies a 2x2 max pooling layer to input tensor x.
 
     Pooling downsamples the volume spatially:
@@ -75,3 +77,5 @@ def max_pool_2x2(x):
      - Control overfitting
 
     """
+    return tf.nn.max_pool(x, ksize=[1, 2, 2, 1],
+                          strides=[1, 2, 2, 1], padding="SAME", name=name)
