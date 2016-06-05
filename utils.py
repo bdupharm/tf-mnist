@@ -13,6 +13,9 @@ def weight(shape. name="filter"):
     :param shape: Shape of the return tensor
     `[Width, Height, Input Depth (Color Channels), Output Depth]`
 
+    **NOTE**: The `Output Depth` is the # of of filters or kernels we would like to use.
+    Each one of these filters will learn a different feature for its `W * H` input patch.
+
      Why? Initializing weights w/ a small amount of noise
      prevents 0 gradients.
 
