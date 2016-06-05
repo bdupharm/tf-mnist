@@ -5,12 +5,13 @@
 import tensorflow as tf
 
 
-def weight_variable(shape. name="filter"):
+def weight(shape. name="filter"):
     """Initialize a weight tensor of :param shape: with...
      - mean of 0.0
      - standard deviation of 0.1.
 
     :param shape: Shape of the return tensor
+    `[Width, Height, Input Depth (Color Channels), Output Depth]`
 
      Why? Initializing weights w/ a small amount of noise
      prevents 0 gradients.
@@ -21,11 +22,12 @@ def weight_variable(shape. name="filter"):
     return tf.Variable(initial, name=name)
 
 
-def bias_variable(shape, name="bias"):
+def bias(shape, name="bias"):
     """Initialize a bias tensor of :param shape: with a
     slightly positive initial bias of 0.1.
 
     :param shape: Shape of the return tensor
+    `[Output Depth]`
 
     Why? Apparently, if you are using a ReLU activation fx
     then doing so avoids "dead neurons".

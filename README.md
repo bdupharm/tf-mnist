@@ -10,5 +10,6 @@ Additionally, this projects aims to explain clearly what is going on at each poi
 See [here](https://www.tensorflow.org/versions/r0.8/get_started/os_setup.html#virtualenv-installation) for tensorflow installation instructions, we suggest you use a `virtualenv`.
 
 ## Running the Project
-Running the project is as easy as `./mnist.py` (for now).
+Run the basic neural network model w/ `./mnist_basic_nn.py`.
 
+Run the convolutional neural network model w/ `./mnist_conv.py`.
