@@ -11,14 +11,37 @@ import time
 import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
 
+mnist = input_data.read_data_sets("MNIST_data", one_hot=True) 
+"""
+mnist is a DataSet object containing the following:
+    - 55000 images and labels for primary training
+    - 5000 images and labesl for iterative validation of training accuracy
+    - 10000 images and labels for final testing of trained accuracy
+"""
+print("Number of images/labels for model:")
+print("Primary training: " + str(mnist.train.num_examples))
+print("Iterative validation: " + str(mnist.test.num_examples))
+print("Final testing: " + str(mnist.validation.num_examples))
+print("")
 
-mnist = input_data.read_data_sets("MNIST_data", one_hot=True)
+"""
+Images are stored as a n-dim array [ n_observations x n_features]
+Labels are stored as [n_observations x n_labels]
+    where each observation is a one-hot vector
+"""
+print("Dimensions of the Image and Label tensors: ")
+print("Images: " + str(mnist.train.images.shape),"Labels: " + str(mnist.train.labels.shape))
 
 with tf.Graph().as_default():
     # Inputs
     x = tf.placeholder(tf.float32, shape=[None, 784], name="image_inputs")
     y_ = tf.placeholder(tf.float32, shape=[None, 10], name="actual_class")
     """
+    Placeholder creates a container for an input image using tensorflow's graph.
+    We allow the first dimension to be None, since this will eventually
+    represent out mini-batches, or how many images we feed into a network
+    at a time during training/validation/testing
+
     x : 28px by 28px images converted into a [(Batch Size * 28^2) x 1] column vector
     y : [Batch Size * 10] matrix of one-hot encodings representing the actual class of the image
        (ie. [ 0, 0, 0, 0, 0, 1, 0, 0, 0, 0 ] where the index of 1 is the class)
