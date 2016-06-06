@@ -1,4 +1,10 @@
 #!/usr/bin/env python
+'''
+An example of implementing multinomial logistic (softmax) regression with a single layer of
+perceptrons using Tensorflow
+
+Ouput: Confidence prediction (as an array) of which class an observation in the class belongs to 
+'''
 
 import time
 
@@ -14,8 +20,8 @@ with tf.Graph().as_default():
     """
     Inputs
 
-    x : 28px by 28px images converted into a [Batch Size * 784] matrix
-    y: [Batch Size * 10] matrix of one hot encodings representing the actual class of the image
+    x : 28px by 28px images converted into a [(Batch Size * 28^2) x 1] column vector
+    y : [Batch Size * 10] matrix of one-hot encodings representing the actual class of the image
        (ie. [ 0, 0, 0, 0, 0, 1, 0, 0, 0, 0 ] where the index of 1 is the class)
 
     """
