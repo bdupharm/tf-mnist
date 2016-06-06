@@ -21,7 +21,10 @@ def weight(shape. name="filter"):
      prevents 0 gradients.
 
     """
-    # mean is 0.0 by default
+    # mean is 0.0 by default, which means that that tensor is centered on the true value.
+    # Imagine a signal that wiggles randomly through time across some limited range,
+    # the center of this range is equal to the true value of the tensor
+    # If the mean was non-zero, it would create a bias or an offset to the true value
     initial = tf.truncated_normal(shape, stddev=0.1)
     return tf.Variable(initial, name=name)
 
