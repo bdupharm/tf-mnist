@@ -1,10 +1,10 @@
 #!/usr/bin/env python
-'''
+"""
 An example of implementing multinomial logistic (softmax) regression with a single layer of
 perceptrons using Tensorflow
 
 Ouput: Confidence prediction (as an array) of which class an observation in the class belongs to 
-'''
+"""
 
 import time
 
@@ -15,22 +15,21 @@ from tensorflow.examples.tutorials.mnist import input_data
 mnist = input_data.read_data_sets("MNIST_data", one_hot=True)
 
 with tf.Graph().as_default():
+    # Inputs
     x = tf.placeholder(tf.float32, shape=[None, 784], name="image_inputs")
     y_ = tf.placeholder(tf.float32, shape=[None, 10], name="actual_class")
     """
-    Inputs
-
     x : 28px by 28px images converted into a [(Batch Size * 28^2) x 1] column vector
     y : [Batch Size * 10] matrix of one-hot encodings representing the actual class of the image
        (ie. [ 0, 0, 0, 0, 0, 1, 0, 0, 0, 0 ] where the index of 1 is the class)
-
     """
     with tf.name_scope("hidden1"):
+        #
         W = tf.Variable(tf.zeros([784,10]), name="weights")
         b = tf.Variable(tf.zeros([10]), name="biases")
 
+    # Sigmoid unit
     y = tf.nn.softmax(tf.matmul(x,W) + b)
-
     """
     function in the form of:
         f(x_i, W, b) = Wx_i + b
@@ -46,15 +45,12 @@ with tf.Graph().as_default():
            returns a K element array w/ normalized probabilities that an image belongs to each class K
 
     Variables (Learning Parameters)
-    x_i : an image with all its pixels flattened out into a [D] vector
-    b : "bias" vector of size [K]
+    x_i : an image with all its pixels flattened out into a [D x 1] vector
+    b : "bias" vector of size [K x 1]
     W : "weight" matrix of size [D * K] (transpose of x)
-
     """
     cross_entropy = -tf.reduce_sum(y_ * tf.log(y), reduction_indices=[1],
                                    name="xentropy")
-    loss = tf.reduce_mean(cross_entropy, name="xentropy_mean")
-
     """
     Represents the cross-entropy between the p distribution and the estimated distribution q
 
@@ -63,11 +59,13 @@ with tf.Graph().as_default():
 
     This represents a a second order equation with a defined minima so gradient descent
     converges to only 1 minima.
-
     """
+
+    # Loss function    
+    loss = tf.reduce_mean(cross_entropy, name="xentropy_mean")
+
     global_step = tf.Variable(0, name="global_step", trainable=False)
     train_op = tf.train.GradientDescentOptimizer(0.5).minimize(loss)
-
     """
     cross_entropy example
 
@@ -83,7 +81,6 @@ with tf.Graph().as_default():
 
     Notice that the accurate output has a more negative value and therefore favored since
     the loss function aims to minimize the cross entropy
-
     """
 
     # SUMMARIES
@@ -110,6 +107,13 @@ with tf.Graph().as_default():
 
 
         correct_prediction = tf.equal(tf.argmax(y,1), tf.argmax(y_,1))
+        """
+        Arguements of the maxima (argmax) refers to the point/s of the 
+        domain of a function where the function is maximized
+        
+        In this context, argmax returns the index of the greatest value in the array
+        """
+
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
         # Calling `Tensor.eval()` == `tf.get_default_session().run(Tensor)`
