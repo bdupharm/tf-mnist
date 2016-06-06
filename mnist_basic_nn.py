@@ -24,7 +24,6 @@ with tf.Graph().as_default():
        (ie. [ 0, 0, 0, 0, 0, 1, 0, 0, 0, 0 ] where the index of 1 is the class)
     """
     with tf.name_scope("hidden1"):
-        #
         W = tf.Variable(tf.zeros([784,10]), name="weights")
         b = tf.Variable(tf.zeros([10]), name="biases")
 
@@ -52,12 +51,15 @@ with tf.Graph().as_default():
     cross_entropy = -tf.reduce_sum(y_ * tf.log(y), reduction_indices=[1],
                                    name="xentropy")
     """
-    Represents the cross-entropy between the p distribution and the estimated distribution q
+    Represents the cross-entropy between the true (p) distribution and the estimated (q) distribution
 
     Defined as:
         H(p,q) = - summation{p(x)*log(q(x))}
 
-    This represents a a second order equation with a defined minima so gradient descent
+    As q converges to p, the product of p*log(q) will increase and therefore, H(p,q) will become
+    more negative
+
+    The cross-entropy function p*log(q) represents a a second order equation with a defined minima so gradient descent
     converges to only 1 minima.
     """
 
