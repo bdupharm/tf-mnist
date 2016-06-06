@@ -14,6 +14,8 @@ List of helpful resources
 * [Fast Algorithms for Convolutional Neural Networks](http://arxiv.org/abs/1509.09308)
 * [Striving for Simplicity: The All Convolutional Net](http://arxiv.org/abs/1412.6806)
 * [ImageNet Classification with Deep Convolutional Neural Networks](https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf)
+* [Understanding Deep Architectures using a Recursive Convolutional Network](https://arxiv.org/abs/1312.1847)
+* [Do Deep Nets Really Need to be Deep?](https://papers.nips.cc/paper/5484-do-deep-nets-really-need-to-be-deep.pdf)
 * [Network In Network](http://arxiv.org/abs/1312.4400)
 * [Deep Convolutional Inverse Graphics Network](http://arxiv.org/abs/1503.03167)
 * [Long-term Recurrent Convolutional Networks for Visual Recognition and Description](http://arxiv.org/abs/1411.4389)
