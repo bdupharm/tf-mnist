@@ -39,6 +39,8 @@ def bias(shape, name="bias"):
 
     This is also known as a "Leaky ReLU".
 
+
+
     """
     initial = tf.constant(0.1, shape=shape)
     return tf.Variable(initial, name=name)
@@ -77,13 +79,20 @@ def conv2d(x, W, name="conv"):
 def max_pool_2x2(x, name="max_pool"):
     """Applies a 2x2 max pooling layer to input tensor x.
 
-    Pooling downsamples the volume spatially:
+    MaxPooling is a form of non-linear down-sampling which reduces the volume spatially
+    by eliminating non-maximal values (effectively "pooling" the signifigant values):
     (ie. downsizes a 224x224x64 input tensor to a 112x112x64 ouput tensor)
     Note that pooling preserves the depth of the input.
 
+    Generic downsampling 
+    ex [1, 3, 5, 7, 9]
+    Downsample array by 2 would result in [1, 5, 7]
+
     Why?
-     - Downsizing reduces amount of parameters/computation in the network
+     - Downsampling reduces the dimensionality of parameters/computation in the network
      - Control overfitting
+        - Downsampling followed by convolution results in interpolation
+          which inherently reduces overfitting
 
     """
     return tf.nn.max_pool(x, ksize=[1, 2, 2, 1],
